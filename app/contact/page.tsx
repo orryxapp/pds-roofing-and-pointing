@@ -26,14 +26,33 @@ export default function ContactPage() {
         preferredDate: '',
     });
     const [submitted, setSubmitted] = useState(false);
+    const [sending, setSending] = useState(false);
+    const [error, setError] = useState('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        setSubmitted(true);
+        setSending(true);
+        setError('');
+        try {
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+            if (res.ok) {
+                setSubmitted(true);
+            } else {
+                setError('Something went wrong. Please call us directly instead.');
+            }
+        } catch {
+            setError('Something went wrong. Please call us directly instead.');
+        } finally {
+            setSending(false);
+        }
     };
 
     if (submitted) {
@@ -162,8 +181,9 @@ export default function ContactPage() {
                             />
                         </div>
 
-                        <button type="submit" className="btn btn-primary submit-btn">
-                            Request Free Quote
+                        {error && <p className="form-error">{error}</p>}
+                        <button type="submit" className="btn btn-primary submit-btn" disabled={sending}>
+                            {sending ? 'Sending...' : 'Request Free Quote'}
                         </button>
                         <p className="form-note">No obligation — we'll call to discuss your job and arrange a visit.</p>
                     </form>
