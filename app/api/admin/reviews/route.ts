@@ -3,7 +3,11 @@ import fs from 'fs';
 import path from 'path';
 
 const DATA_PATH = path.join(process.cwd(), 'data', 'reviews.json');
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'MREroofing2024';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
+function isAuthorized(password: string | null | undefined) {
+    return ADMIN_PASSWORD && password === ADMIN_PASSWORD;
+}
 
 function readReviews() {
     const data = fs.readFileSync(DATA_PATH, 'utf-8');
@@ -18,7 +22,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const password = searchParams.get('password');
 
-    if (password !== ADMIN_PASSWORD) {
+    if (!isAuthorized(password)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -30,7 +34,7 @@ export async function PATCH(request: Request) {
     const body = await request.json();
     const { id, status, password } = body;
 
-    if (password !== ADMIN_PASSWORD) {
+    if (!isAuthorized(password)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -54,7 +58,7 @@ export async function DELETE(request: Request) {
     const body = await request.json();
     const { id, password } = body;
 
-    if (password !== ADMIN_PASSWORD) {
+    if (!isAuthorized(password)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
