@@ -1,0 +1,406 @@
+.reviews-main {
+    min-height: 100vh;
+    padding-top: 120px;
+    padding-bottom: 4rem;
+    background: radial-gradient(circle at center, var(--bg-dark) 0%, var(--bg-darker) 100%);
+    display: flex;
+    flex-direction: column;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.spline-container-reviews {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: auto;
+    /* Let clicks/hovers reach the Spline bot */
+}
+
+.relative-z {
+    position: relative;
+    z-index: 10;
+    pointer-events: none;
+    /* Let empty space clicks fall through to Spline */
+}
+
+.reviews-header {
+    margin-bottom: 4rem;
+    pointer-events: auto;
+    /* Keep text selectable */
+}
+
+/* 3D Carousel Setup */
+.carousel-container {
+    position: relative;
+    max-width: 1000px;
+    /* Widened to fit 3 cards better */
+    margin: 0 auto;
+    perspective: 1500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cards-wrapper {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    transform-style: preserve-3d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Individual Cards */
+.review-card {
+    position: absolute;
+    width: 100%;
+    max-width: 450px;
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform-origin: center center;
+    user-select: none;
+    pointer-events: auto;
+    /* Ensure cards remain clickable/hoverable */
+}
+
+/* Functional 3D Positions */
+/* Center (Active) Card */
+.review-card.card-active {
+    transform: translateX(0) translateZ(100px) scale(1);
+    opacity: 1;
+    z-index: 3;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.15);
+}
+
+/* Right Card */
+.review-card.card-next {
+    transform: translateX(50%) translateZ(-50px) scale(0.85) rotateY(-15deg);
+    opacity: 0.6;
+    z-index: 2;
+    filter: blur(2px);
+    cursor: pointer;
+}
+
+.review-card.card-next:hover {
+    opacity: 0.8;
+    filter: blur(0px);
+}
+
+/* Left Card */
+.review-card.card-prev {
+    transform: translateX(-50%) translateZ(-50px) scale(0.85) rotateY(15deg);
+    opacity: 0.6;
+    z-index: 2;
+    filter: blur(2px);
+    cursor: pointer;
+}
+
+.review-card.card-prev:hover {
+    opacity: 0.8;
+    filter: blur(0px);
+}
+
+/* Hidden Cards (Behind) */
+.review-card.card-hidden {
+    transform: translateX(0) translateZ(-200px) scale(0.7);
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Card Content Styling */
+.review-card .stars {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+}
+
+.review-card .content {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-main);
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+.review-card .author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.review-card .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), #a68420);
+    color: var(--bg-darker);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.2rem;
+}
+
+.review-card .info h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.review-card .info .role {
+    font-size: 0.85rem;
+    color: var(--primary);
+}
+
+/* Controls */
+.carousel-controls {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    z-index: 10;
+}
+
+.round-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background: rgba(10, 10, 10, 0.5);
+    backdrop-filter: blur(10px);
+    pointer-events: auto;
+    /* Ensure buttons remain clickable */
+}
+
+.round-btn:hover {
+    background: var(--primary);
+    color: var(--bg-darker);
+    transform: scale(1.1);
+}
+
+.review-counter {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    pointer-events: auto;
+}
+
+/* Leave a Review Section */
+.leave-review-section {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    pointer-events: auto;
+}
+
+.leave-review-btn {
+    font-size: 1.1rem;
+    padding: 0.9rem 2.5rem;
+}
+
+.review-form {
+    width: 100%;
+    max-width: 600px;
+    padding: 2.5rem;
+    border-radius: 20px;
+}
+
+.review-form h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.form-subtitle {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+.rf-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.rf-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.rf-group.rf-full {
+    margin-bottom: 1.5rem;
+}
+
+.rf-group label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.rf-group input,
+.rf-group select,
+.rf-group textarea {
+    padding: 0.7rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease;
+}
+
+.rf-group input:focus,
+.rf-group select:focus,
+.rf-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.rf-group input::placeholder,
+.rf-group textarea::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.rf-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a0a0a0' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+.rf-group select option {
+    background: #1a1a1a;
+    color: var(--text-main);
+}
+
+.rf-group textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.star-select {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.25rem;
+    justify-content: flex-end;
+}
+
+.star-btn {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+    padding: 0;
+    line-height: 1;
+}
+
+.star-btn.active {
+    color: var(--primary);
+}
+
+.star-btn:hover {
+    transform: scale(1.2);
+}
+
+.rf-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.rf-actions .btn-primary {
+    flex: 1;
+}
+
+.rf-note {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 1rem;
+}
+
+.review-submitted {
+    max-width: 450px;
+    padding: 2.5rem;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.success-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--bg-darker);
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.review-submitted h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+}
+
+.review-submitted p {
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .review-card.card-next {
+        transform: translateX(30%) translateZ(-50px) scale(0.85);
+        /* Reduced translation and rotation for small screens */
+        rotateY: 0deg;
+    }
+
+    .review-card.card-prev {
+        transform: translateX(-30%) translateZ(-50px) scale(0.85);
+        rotateY: 0deg;
+    }
+
+    .rf-row {
+        grid-template-columns: 1fr;
+    }
+
+    .review-form {
+        padding: 1.5rem;
+    }
+
+    .rf-actions {
+        flex-direction: column;
+    }
+}

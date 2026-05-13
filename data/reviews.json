@@ -1,0 +1,178 @@
+[
+  {
+    "id": "mb-1",
+    "name": "Joanne",
+    "location": "Manchester",
+    "content": "I had a full roof and fascias done. Very happy with the work and the fact they went out of their way to get the tiles I wanted. They were efficient and cleaned up after themselves, letting me know what was going on. The roof looks amazing!",
+    "rating": 5,
+    "date": "23 May 2022",
+    "jobType": "Full Roof",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-2",
+    "name": "Rebecca",
+    "location": "Bolton",
+    "content": "Scott and his team were brilliant. I had some holes in the eves that needed repairing. Scott came and assessed the damage, gave me a quote at a good price and the next day they turned up and got on with the job with no fuss. Very polite and friendly, I would definitely recommend.",
+    "rating": 5,
+    "date": "4 May 2022",
+    "jobType": "Roof Repair",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-3",
+    "name": "Sarah",
+    "location": "Manchester",
+    "content": "Quick response, Scott worked out the issue, explained very clearly what was wrong and fixed it within a week for a reasonable price. I would highly recommend Scott.",
+    "rating": 5,
+    "date": "1 Feb 2022",
+    "jobType": "Roof Repair",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-4",
+    "name": "Jayne",
+    "location": "Manchester",
+    "content": "Scott looked at the job, found it wasn't a tile issue but a problem with the membrane under the ridge tiles. Also the lead was not sealed to the chimney. He gave me a reasonable quote and completed the job before Christmas as he promised. Friendly and informative throughout.",
+    "rating": 5,
+    "date": "29 Dec 2021",
+    "jobType": "Roof Repair",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-5",
+    "name": "Steve",
+    "location": "Manchester",
+    "content": "Scott, absolute gent. Professional, sorted the job out straight away, took pictures and showed me the problem. Would definitely use him again!",
+    "rating": 5,
+    "date": "16 Dec 2021",
+    "jobType": "Roof Repair",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-6",
+    "name": "Rosie",
+    "location": "Salford",
+    "content": "Scott and his team were really good. They arrived as agreed and completed the work quickly and without making any mess. He was also helpful in explaining some issues that we hadn't known about. I would hire him again.",
+    "rating": 5,
+    "date": "4 Aug 2021",
+    "jobType": "Roof and Gutter Repairs",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-7",
+    "name": "Richard",
+    "location": "Manchester",
+    "content": "Excellent guy, can't fault him, nothing but good things to say. Highly recommended. Went out of his way to ensure the job was done correctly, great knowledge, didn't try to over-charge and did exactly what he said he would.",
+    "rating": 5,
+    "date": "20 Jun 2021",
+    "jobType": "Roof Flashing",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-8",
+    "name": "Douglas",
+    "location": "Sale",
+    "content": "Unlike some roofers, Scott turned up and gave a good price for the job. He did the job to a high standard, turning up on the day he said. He also did some extra work for no cost. A real nice chap, I would recommend Scott to anyone looking for a good reliable roofer.",
+    "rating": 5,
+    "date": "12 Mar 2021",
+    "jobType": "Roof Repair",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-9",
+    "name": "Tom",
+    "location": "Manchester",
+    "content": "Really nice guys, provided a very reasonable quote and quickly replaced a flat roof. Made temporary repairs whilst awaiting the complete job. Fixed a couple of small roofing related things whilst they were here as well. Wouldn't hesitate to use these guys again.",
+    "rating": 5,
+    "date": "19 Feb 2021",
+    "jobType": "Flat Roof",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-10",
+    "name": "Naheed",
+    "location": "Manchester",
+    "content": "Scott and his team were amazing, it's been over a year and my new roof has given me no issues. All damp gone and roof still looks professionally done. I will be getting my parents' roof done by Scott too.",
+    "rating": 5,
+    "date": "15 Feb 2021",
+    "jobType": "Full Roof",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-11",
+    "name": "Catherine",
+    "location": "Manchester",
+    "content": "Scott came round when he said he would and gave a good quote for the job. Did a fantastic job replacing the fascia and guttering. Really pleased. Tidied up afterwards. Been back since to do more work. Would definitely recommend!",
+    "rating": 5,
+    "date": "8 Oct 2020",
+    "jobType": "Guttering & Fascias",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-12",
+    "name": "Richard",
+    "location": "Manchester",
+    "content": "Excellent job. Did exactly what was needed in a very quick time. Very friendly and knew what he was doing. No messing, 10/10.",
+    "rating": 5,
+    "date": "3 Oct 2020",
+    "jobType": "Roof Repair",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-13",
+    "name": "Lucy",
+    "location": "Manchester",
+    "content": "Scott and his team were great! They were super efficient, informative and accommodating to my last minute requests and limited availability. Highly recommended.",
+    "rating": 5,
+    "date": "22 Jul 2020",
+    "jobType": "Guttering",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-14",
+    "name": "Shash",
+    "location": "Manchester",
+    "content": "Scott is not only a skilled and diligent roofer, he's also a very considerate guy along with his brothers. I would recommend them to anyone needing a professional roofing service.",
+    "rating": 5,
+    "date": "17 Jun 2020",
+    "jobType": "Roof Repair",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-15",
+    "name": "Teresa",
+    "location": "Manchester",
+    "content": "Scott has done a great job with our roof and chimney repair. The communication was easy and straightforward. He was honest with his recommendations and made an effort to make it as inexpensive for us as possible.",
+    "rating": 5,
+    "date": "6 Dec 2019",
+    "jobType": "Chimney Repair",
+    "status": "approved",
+    "source": "mybuilder"
+  },
+  {
+    "id": "mb-16",
+    "name": "Sarah",
+    "location": "Manchester",
+    "content": "Scott and his team did a great job fixing our roof. Very satisfied.",
+    "rating": 5,
+    "date": "28 Sep 2022",
+    "jobType": "Roof Repair",
+    "status": "approved",
+    "source": "mybuilder"
+  }
+]

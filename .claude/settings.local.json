@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "WebFetch(domain:www.mybuilder.com)",
+      "mcp__Claude_in_Chrome__browser_batch",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__computer",
+      "mcp__Claude_in_Chrome__get_page_text",
+      "mcp__Claude_in_Chrome__javascript_tool",
+      "Bash(npm run *)",
+      "Bash(timeout 10)",
+      "mcp__Claude_Preview__preview_start",
+      "PowerShell(Get-Process -Id \\(Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue\\).OwningProcess -ErrorAction SilentlyContinue | Select-Object Id, ProcessName)",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Process | Where-Object { $_.ProcessName -match 'node|next' } | Select-Object Id, ProcessName)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}
