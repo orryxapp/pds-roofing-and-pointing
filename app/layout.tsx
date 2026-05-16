@@ -29,6 +29,7 @@ export default function RootLayout({
                         </button>
                         <div className={`nav-links ${menuOpen ? 'nav-open' : ''}`}>
                             <a href="/" className="nav-link" onClick={() => setMenuOpen(false)}>Home</a>
+                            <a href="/gallery" className="nav-link" onClick={() => setMenuOpen(false)}>Gallery</a>
                             <a href="/reviews" className="nav-link" onClick={() => setMenuOpen(false)}>Reviews</a>
                             <a href="/contact" className="nav-link" onClick={() => setMenuOpen(false)}>Contact</a>
                             <a href="/contact" className="btn btn-primary nav-cta" onClick={() => setMenuOpen(false)}>Get a Free Quote</a>

@@ -1,0 +1,137 @@
+.gallery-main {
+    min-height: 100vh;
+    padding-top: 120px;
+    padding-bottom: 4rem;
+    background: radial-gradient(circle at 50% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+        var(--bg-dark);
+}
+
+.gallery-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.gallery-grid {
+    columns: 3;
+    column-gap: 1rem;
+}
+
+.gallery-item {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.02);
+}
+
+.gallery-item img {
+    width: 100%;
+    display: block;
+    border-radius: 12px;
+}
+
+.gallery-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-muted);
+}
+
+.gallery-empty p {
+    font-size: 1.1rem;
+}
+
+/* Lightbox */
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    cursor: pointer;
+}
+
+.lightbox-img {
+    max-width: 90vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 8px;
+    cursor: default;
+}
+
+.lightbox-close {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 101;
+    transition: background 0.2s ease;
+}
+
+.lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 101;
+    transition: background 0.2s ease;
+}
+
+.lightbox-nav:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-prev {
+    left: 1.5rem;
+}
+
+.lightbox-next {
+    right: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .gallery-grid {
+        columns: 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-grid {
+        columns: 1;
+    }
+}
