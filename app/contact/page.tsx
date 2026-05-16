@@ -46,7 +46,8 @@ export default function ContactPage() {
             if (res.ok) {
                 setSubmitted(true);
             } else {
-                setError('Something went wrong. Please call us directly instead.');
+                const data = await res.json().catch(() => null);
+                setError(data?.error || 'Something went wrong. Please call us directly instead.');
             }
         } catch {
             setError('Something went wrong. Please call us directly instead.');

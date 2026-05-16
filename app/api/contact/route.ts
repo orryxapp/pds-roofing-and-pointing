@@ -11,9 +11,13 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    if (!process.env.Resend_key) {
+        return NextResponse.json({ error: 'Email service not configured' }, { status: 500 });
+    }
+
     try {
-        await resend.emails.send({
-            from: 'PDS Roofing Website <onboarding@resend.dev>',
+        const { data, error: resendError } = await resend.emails.send({
+            from: 'PDS Roofing <quotes@pdsroofing.com>',
             to: 'sfitz0181@gmail.com',
             subject: `New Quote Request: ${jobType} — ${name}`,
             html: `
@@ -31,8 +35,12 @@ export async function POST(request: Request) {
             `,
         });
 
-        return NextResponse.json({ message: 'Email sent successfully' });
-    } catch {
-        return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+        if (resendError) {
+            return NextResponse.json({ error: resendError.message }, { status: 500 });
+        }
+
+        return NextResponse.json({ message: 'Email sent successfully', id: data?.id });
+    } catch (err) {
+        return NextResponse.json({ error: String(err) }, { status: 500 });
     }
 }
