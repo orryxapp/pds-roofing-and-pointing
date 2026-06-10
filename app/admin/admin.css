@@ -266,6 +266,33 @@
     color: var(--text-muted);
 }
 
+/* Migrate section */
+.migrate-section {
+    padding: 2rem;
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    border-color: rgba(212, 175, 55, 0.3);
+}
+
+.migrate-section h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.migrate-section p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.migrate-message {
+    margin-top: 1rem !important;
+    color: var(--primary);
+    font-weight: 600;
+}
+
 /* Tabs */
 .admin-tabs {
     display: flex;

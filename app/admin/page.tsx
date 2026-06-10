@@ -30,6 +30,8 @@ export default function AdminPage() {
     const [tab, setTab] = useState<'reviews' | 'gallery'>('reviews');
     const [images, setImages] = useState<GalleryImage[]>([]);
     const [uploading, setUploading] = useState(false);
+    const [migrating, setMigrating] = useState(false);
+    const [migrateMessage, setMigrateMessage] = useState('');
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const fetchReviews = async (pw: string) => {
@@ -101,6 +103,30 @@ export default function AdminPage() {
         if (fileInputRef.current) fileInputRef.current.value = '';
     };
 
+    const handleMigrate = async () => {
+        if (!confirm('Import the original MyBuilder reviews into the database? This is safe to run multiple times — existing reviews will be skipped.')) return;
+        setMigrating(true);
+        setMigrateMessage('');
+        try {
+            const res = await fetch('/api/admin/migrate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setMigrateMessage(`Imported ${data.imported} reviews, skipped ${data.skipped}`);
+                fetchReviews(password);
+            } else {
+                setMigrateMessage(`Error: ${data.error || 'Migration failed'}`);
+            }
+        } catch {
+            setMigrateMessage('Error: Could not connect');
+        } finally {
+            setMigrating(false);
+        }
+    };
+
     const handleDeleteImage = async (url: string) => {
         if (!confirm('Delete this photo?')) return;
         const res = await fetch('/api/admin/gallery', {
@@ -163,6 +189,21 @@ export default function AdminPage() {
 
                 {tab === 'reviews' && (
                     <>
+                        {reviews.length === 0 && (
+                            <div className="migrate-section glass-panel">
+                                <h3>Import <span className="text-gold">MyBuilder Reviews</span></h3>
+                                <p>It looks like the database is empty. Click below to import the original 16 MyBuilder reviews.</p>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={handleMigrate}
+                                    disabled={migrating}
+                                >
+                                    {migrating ? 'Importing...' : 'Import Reviews'}
+                                </button>
+                                {migrateMessage && <p className="migrate-message">{migrateMessage}</p>}
+                            </div>
+                        )}
+
                         <div className="admin-filters">
                             {(['pending', 'approved', 'rejected', 'all'] as const).map(f => (
                                 <button
