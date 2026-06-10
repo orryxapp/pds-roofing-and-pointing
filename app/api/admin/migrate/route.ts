@@ -21,7 +21,15 @@ interface SeedReview {
     source: string;
 }
 
+export async function GET(request: Request) {
+    return handleMigrate(request);
+}
+
 export async function POST(request: Request) {
+    return handleMigrate(request);
+}
+
+async function handleMigrate(request: Request) {
     const { searchParams } = new URL(request.url);
     const password = searchParams.get('password');
 
