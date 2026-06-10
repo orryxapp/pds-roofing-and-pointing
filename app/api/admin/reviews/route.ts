@@ -1,21 +1,10 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { sql, ensureSchema } from '@/lib/db';
 
-const DATA_PATH = path.join(process.cwd(), 'data', 'reviews.json');
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 function isAuthorized(password: string | null | undefined) {
     return ADMIN_PASSWORD && password === ADMIN_PASSWORD;
-}
-
-function readReviews() {
-    const data = fs.readFileSync(DATA_PATH, 'utf-8');
-    return JSON.parse(data);
-}
-
-function writeReviews(reviews: unknown[]) {
-    fs.writeFileSync(DATA_PATH, JSON.stringify(reviews, null, 2));
 }
 
 export async function GET(request: Request) {
@@ -26,8 +15,28 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const reviews = readReviews();
-    return NextResponse.json(reviews);
+    try {
+        await ensureSchema();
+        const rows = await sql`
+            SELECT id, name, location, content, rating, date, job_type, status, source
+            FROM reviews
+            ORDER BY created_at DESC
+        `;
+        const reviews = rows.map((r) => ({
+            id: r.id,
+            name: r.name,
+            location: r.location,
+            content: r.content,
+            rating: r.rating,
+            date: r.date,
+            jobType: r.job_type,
+            status: r.status,
+            source: r.source,
+        }));
+        return NextResponse.json(reviews);
+    } catch (err) {
+        return NextResponse.json({ error: String(err) }, { status: 500 });
+    }
 }
 
 export async function PATCH(request: Request) {
@@ -42,16 +51,17 @@ export async function PATCH(request: Request) {
         return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
 
-    const reviews = readReviews();
-    const review = reviews.find((r: { id: string }) => r.id === id);
-    if (!review) {
-        return NextResponse.json({ error: 'Review not found' }, { status: 404 });
+    try {
+        const result = await sql`
+            UPDATE reviews SET status = ${status} WHERE id = ${id}
+        `;
+        if (result.length === 0 && (result as { rowCount?: number }).rowCount === 0) {
+            return NextResponse.json({ error: 'Review not found' }, { status: 404 });
+        }
+        return NextResponse.json({ message: `Review ${status}` });
+    } catch (err) {
+        return NextResponse.json({ error: String(err) }, { status: 500 });
     }
-
-    review.status = status;
-    writeReviews(reviews);
-
-    return NextResponse.json({ message: `Review ${status}` });
 }
 
 export async function DELETE(request: Request) {
@@ -62,14 +72,10 @@ export async function DELETE(request: Request) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    let reviews = readReviews();
-    const before = reviews.length;
-    reviews = reviews.filter((r: { id: string }) => r.id !== id);
-
-    if (reviews.length === before) {
-        return NextResponse.json({ error: 'Review not found' }, { status: 404 });
+    try {
+        await sql`DELETE FROM reviews WHERE id = ${id}`;
+        return NextResponse.json({ message: 'Review deleted' });
+    } catch (err) {
+        return NextResponse.json({ error: String(err) }, { status: 500 });
     }
-
-    writeReviews(reviews);
-    return NextResponse.json({ message: 'Review deleted' });
 }

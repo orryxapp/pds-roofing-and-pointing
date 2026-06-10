@@ -1,51 +1,56 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-
-const DATA_PATH = path.join(process.cwd(), 'data', 'reviews.json');
-
-function readReviews() {
-    const data = fs.readFileSync(DATA_PATH, 'utf-8');
-    return JSON.parse(data);
-}
-
-function writeReviews(reviews: unknown[]) {
-    fs.writeFileSync(DATA_PATH, JSON.stringify(reviews, null, 2));
-}
+import { sql, ensureSchema } from '@/lib/db';
 
 export async function GET() {
-    const reviews = readReviews();
-    const approved = reviews.filter((r: { status: string }) => r.status === 'approved');
-    return NextResponse.json(approved);
+    try {
+        await ensureSchema();
+        const rows = await sql`
+            SELECT id, name, location, content, rating, date, job_type, status, source
+            FROM reviews
+            WHERE status = 'approved'
+            ORDER BY created_at DESC
+        `;
+        const reviews = rows.map((r) => ({
+            id: r.id,
+            name: r.name,
+            location: r.location,
+            content: r.content,
+            rating: r.rating,
+            date: r.date,
+            jobType: r.job_type,
+            status: r.status,
+            source: r.source,
+        }));
+        return NextResponse.json(reviews);
+    } catch (err) {
+        return NextResponse.json({ error: String(err) }, { status: 500 });
+    }
 }
 
 export async function POST(request: Request) {
-    const body = await request.json();
-    const { name, location, content, rating, jobType } = body;
+    try {
+        await ensureSchema();
+        const body = await request.json();
+        const { name, location, content, rating, jobType } = body;
 
-    if (!name || !location || !content || !rating || !jobType) {
-        return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
+        if (!name || !location || !content || !rating || !jobType) {
+            return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
+        }
+
+        if (rating < 1 || rating > 5) {
+            return NextResponse.json({ error: 'Rating must be between 1 and 5' }, { status: 400 });
+        }
+
+        const id = `web-${Date.now()}`;
+        const date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+        await sql`
+            INSERT INTO reviews (id, name, location, content, rating, date, job_type, status, source)
+            VALUES (${id}, ${name.trim()}, ${location.trim()}, ${content.trim()}, ${Number(rating)}, ${date}, ${jobType.trim()}, 'pending', 'website')
+        `;
+
+        return NextResponse.json({ message: 'Review submitted for approval' }, { status: 201 });
+    } catch (err) {
+        return NextResponse.json({ error: String(err) }, { status: 500 });
     }
-
-    if (rating < 1 || rating > 5) {
-        return NextResponse.json({ error: 'Rating must be between 1 and 5' }, { status: 400 });
-    }
-
-    const reviews = readReviews();
-    const newReview = {
-        id: `web-${Date.now()}`,
-        name: name.trim(),
-        location: location.trim(),
-        content: content.trim(),
-        rating: Number(rating),
-        date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
-        jobType: jobType.trim(),
-        status: 'pending',
-        source: 'website',
-    };
-
-    reviews.push(newReview);
-    writeReviews(reviews);
-
-    return NextResponse.json({ message: 'Review submitted for approval' }, { status: 201 });
 }
