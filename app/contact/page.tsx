@@ -24,6 +24,7 @@ export default function ContactPage() {
         jobType: '',
         description: '',
         preferredDate: '',
+        hp_field: '',
     });
     const [submitted, setSubmitted] = useState(false);
     const [sending, setSending] = useState(false);
@@ -87,6 +88,17 @@ export default function ContactPage() {
                 <div className="contact-grid">
                     <form className="booking-form glass-panel animate-fade-in-up" onSubmit={handleSubmit}>
                         <h3>Book Your Job</h3>
+
+                        <input
+                            type="text"
+                            name="hp_field"
+                            className="hp-field"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            aria-hidden="true"
+                            value={formData.hp_field}
+                            onChange={handleChange}
+                        />
 
                         <div className="form-row">
                             <div className="form-group">

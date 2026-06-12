@@ -1,13 +1,8 @@
 import { NextResponse } from 'next/server';
 import { sql, ensureSchema } from '@/lib/db';
+import { verifyAdmin } from '@/lib/admin-auth';
 import fs from 'fs';
 import path from 'path';
-
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-
-function isAuthorized(password: string | null | undefined) {
-    return ADMIN_PASSWORD && password === ADMIN_PASSWORD;
-}
 
 interface SeedReview {
     id: string;
@@ -25,8 +20,9 @@ export async function POST(request: Request) {
     const body = await request.json().catch(() => ({}));
     const password = body.password;
 
-    if (!isAuthorized(password)) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const auth = await verifyAdmin(request, password);
+    if (!auth.ok) {
+        return NextResponse.json({ error: auth.error }, { status: auth.status });
     }
 
     try {
@@ -53,6 +49,7 @@ export async function POST(request: Request) {
 
         return NextResponse.json({ message: `Migration complete`, imported, skipped });
     } catch (err) {
-        return NextResponse.json({ error: String(err) }, { status: 500 });
+        console.error('Migrate error:', err);
+        return NextResponse.json({ error: 'Migration failed' }, { status: 500 });
     }
 }

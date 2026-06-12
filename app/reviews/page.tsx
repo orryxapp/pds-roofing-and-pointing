@@ -37,6 +37,7 @@ export default function ReviewsPage() {
         jobType: '',
         rating: '5',
         content: '',
+        hp_field: '',
     });
 
     useEffect(() => {
@@ -77,7 +78,7 @@ export default function ReviewsPage() {
         });
         if (res.ok) {
             setSubmitted(true);
-            setFormData({ name: '', location: '', jobType: '', rating: '5', content: '' });
+            setFormData({ name: '', location: '', jobType: '', rating: '5', content: '', hp_field: '' });
         }
     };
 
@@ -153,6 +154,17 @@ export default function ReviewsPage() {
                         <form className="review-form glass-panel" onSubmit={handleSubmit}>
                             <h3>Leave a <span className="text-gold">Review</span></h3>
                             <p className="form-subtitle">Share your experience with PDS Roofing</p>
+
+                            <input
+                                type="text"
+                                name="hp_field"
+                                className="hp-field"
+                                tabIndex={-1}
+                                autoComplete="off"
+                                aria-hidden="true"
+                                value={formData.hp_field}
+                                onChange={handleChange}
+                            />
 
                             <div className="rf-row">
                                 <div className="rf-group">

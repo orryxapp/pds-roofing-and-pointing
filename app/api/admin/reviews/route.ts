@@ -1,18 +1,13 @@
 import { NextResponse } from 'next/server';
 import { sql, ensureSchema } from '@/lib/db';
-
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-
-function isAuthorized(password: string | null | undefined) {
-    return ADMIN_PASSWORD && password === ADMIN_PASSWORD;
-}
+import { verifyAdmin } from '@/lib/admin-auth';
 
 export async function GET(request: Request) {
-    const { searchParams } = new URL(request.url);
-    const password = searchParams.get('password');
-
-    if (!isAuthorized(password)) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // Password comes in via header, never the URL — keeps it out of logs/history.
+    const password = request.headers.get('x-admin-password');
+    const auth = await verifyAdmin(request, password);
+    if (!auth.ok) {
+        return NextResponse.json({ error: auth.error }, { status: auth.status });
     }
 
     try {
@@ -35,16 +30,24 @@ export async function GET(request: Request) {
         }));
         return NextResponse.json(reviews);
     } catch (err) {
-        return NextResponse.json({ error: String(err) }, { status: 500 });
+        console.error('Admin reviews GET error:', err);
+        return NextResponse.json({ error: 'Could not load reviews' }, { status: 500 });
     }
 }
 
 export async function PATCH(request: Request) {
-    const body = await request.json();
-    const { id, status, password } = body;
+    let body: Record<string, unknown>;
+    try {
+        body = await request.json();
+    } catch {
+        return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+    }
 
-    if (!isAuthorized(password)) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const { id, status, password } = body as Record<string, string>;
+
+    const auth = await verifyAdmin(request, password);
+    if (!auth.ok) {
+        return NextResponse.json({ error: auth.error }, { status: auth.status });
     }
 
     if (!id || !['approved', 'rejected'].includes(status)) {
@@ -52,30 +55,39 @@ export async function PATCH(request: Request) {
     }
 
     try {
-        const result = await sql`
-            UPDATE reviews SET status = ${status} WHERE id = ${id}
+        const rows = await sql`
+            UPDATE reviews SET status = ${status} WHERE id = ${id} RETURNING id
         `;
-        if (result.length === 0 && (result as { rowCount?: number }).rowCount === 0) {
+        if (rows.length === 0) {
             return NextResponse.json({ error: 'Review not found' }, { status: 404 });
         }
         return NextResponse.json({ message: `Review ${status}` });
     } catch (err) {
-        return NextResponse.json({ error: String(err) }, { status: 500 });
+        console.error('Admin reviews PATCH error:', err);
+        return NextResponse.json({ error: 'Could not update review' }, { status: 500 });
     }
 }
 
 export async function DELETE(request: Request) {
-    const body = await request.json();
-    const { id, password } = body;
+    let body: Record<string, unknown>;
+    try {
+        body = await request.json();
+    } catch {
+        return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+    }
 
-    if (!isAuthorized(password)) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const { id, password } = body as Record<string, string>;
+
+    const auth = await verifyAdmin(request, password);
+    if (!auth.ok) {
+        return NextResponse.json({ error: auth.error }, { status: auth.status });
     }
 
     try {
         await sql`DELETE FROM reviews WHERE id = ${id}`;
         return NextResponse.json({ message: 'Review deleted' });
     } catch (err) {
-        return NextResponse.json({ error: String(err) }, { status: 500 });
+        console.error('Admin reviews DELETE error:', err);
+        return NextResponse.json({ error: 'Could not delete review' }, { status: 500 });
     }
 }

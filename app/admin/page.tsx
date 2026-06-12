@@ -35,14 +35,17 @@ export default function AdminPage() {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const fetchReviews = async (pw: string) => {
-        const res = await fetch(`/api/admin/reviews?password=${encodeURIComponent(pw)}`);
+        const res = await fetch('/api/admin/reviews', {
+            headers: { 'x-admin-password': pw },
+        });
         if (res.ok) {
             const data = await res.json();
             setReviews(data);
             setAuthenticated(true);
             setError('');
         } else {
-            setError('Wrong password');
+            const data = await res.json().catch(() => null);
+            setError(data?.error || 'Wrong password');
         }
     };
 

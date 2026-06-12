@@ -36,6 +36,18 @@ a {
 }
 
 /* Utilities */
+/* Honeypot field — visually hidden, off-screen, never shown to real users.
+   Bots that auto-fill every input get caught server-side. */
+.hp-field {
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .glass-panel {
   background: var(--card-bg);
   backdrop-filter: blur(12px);
